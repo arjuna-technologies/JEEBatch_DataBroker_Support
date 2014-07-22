@@ -4,78 +4,65 @@
 
 package com.arjuna.dbsupport.jeebatch;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.batch.api.chunk.ItemWriter;
-import javax.batch.runtime.context.JobContext;
-import javax.inject.Inject;
-import com.arjuna.databroker.data.DataConsumer;
+import javax.inject.Named;
 import com.arjuna.databroker.data.DataFlowNode;
+import com.arjuna.databroker.data.DataConsumer;
 import com.arjuna.databroker.data.DataProvider;
 
-public class ItemWriterDataProvider<T> implements DataProvider<T>, ItemWriter
+@Named
+public class BatchDataProvider<T> implements DataProvider<T>
 {
-    private static final Logger logger = Logger.getLogger(ItemWriterDataProvider.class.getName());
+    private static final Logger logger = Logger.getLogger(BatchDataProvider.class.getName());
 
-    @Inject
-    private JobContext jobContext;
-    
-    @Override
-    public Serializable checkpointInfo()
-        throws Exception
+    public BatchDataProvider(DataFlowNode dataFlowNode)
     {
-        return null;
-    }
-
-    @Override
-    public void open(Serializable checkpoint)
-        throws Exception
-    {
-    }
-
-    @Override
-    public void writeItems(List<Object> items)
-        throws Exception
-    {
-    }
-
-    @Override
-    public void close()
-        throws Exception
-    {
+        _dataFlowNode  = dataFlowNode;
+        _dataConsumers = new LinkedList<DataConsumer<T>>();
     }
 
     @Override
     public DataFlowNode getDataFlowNode()
     {
+        logger.log(Level.INFO, "BatchDataProvider.getDataFlowNode");
+
         return _dataFlowNode;
     }
 
     @Override
     public Collection<DataConsumer<T>> getDataConsumers()
     {
+        logger.log(Level.INFO, "BatchDataProvider.getDataConsumers");
+
         return Collections.unmodifiableList(_dataConsumers);
     }
 
     @Override
     public void addDataConsumer(DataConsumer<T> dataConsumer)
     {
+        logger.log(Level.INFO, "BatchDataProvider.addDataConsumer");
+
         _dataConsumers.add(dataConsumer);
     }
 
     @Override
     public void removeDataConsumer(DataConsumer<T> dataConsumer)
     {
+        logger.log(Level.INFO, "BatchDataProvider.removeDataConsumer");
+
         _dataConsumers.remove(dataConsumer);
     }
 
     @Override
     public void produce(T data)
     {
+        logger.log(Level.INFO, "BatchDataProvider.produce");
+
         for (DataConsumer<T> dataConsumer: _dataConsumers)
             dataConsumer.consume(this, data);
     }

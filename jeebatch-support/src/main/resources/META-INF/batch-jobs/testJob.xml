@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--                                                                                                     -->
+<!-- Copyright (c) 2014, Arjuna Technologies Limited, Newcastle-upon-Tyne, England. All rights reserved. -->
+<!--                                                                                                     -->
+
+<job id="testJob" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
+    <step id="testStep">
+        <chunk item-count="3">
+            <reader ref="dataFlowItemReader"/>
+            <processor ref="testItemProcessor"/>
+            <writer ref="dataFlowItemWriter"/>
+        </chunk>
+    </step>
+</job>

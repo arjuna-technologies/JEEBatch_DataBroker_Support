@@ -15,11 +15,17 @@
 
     <artifactId>jeebatch-support</artifactId>
 
-    <packaging>jar</packaging>
+    <!-- packaging>jar</packaging -->
+    <packaging>ejb</packaging>
 
     <name>JEE Batch DataBroker Support</name>
 
     <dependencies>
+        <dependency>
+            <groupId>org.jboss.spec.javax.ejb</groupId>
+            <artifactId>jboss-ejb-api_${ejb-api.version}_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.jboss.spec.javax.batch</groupId>
             <artifactId>jboss-batch-api_1.0_spec</artifactId>
