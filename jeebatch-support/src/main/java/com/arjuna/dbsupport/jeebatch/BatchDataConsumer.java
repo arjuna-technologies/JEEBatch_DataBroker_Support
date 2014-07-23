@@ -4,15 +4,16 @@
 
 package com.arjuna.dbsupport.jeebatch;
 
+import java.util.UUID;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.inject.Named;
 import com.arjuna.databroker.data.DataConsumer;
 import com.arjuna.databroker.data.DataProvider;
 import com.arjuna.databroker.data.DataFlowNode;
 
-@Named
-public class BatchDataConsumer<T> implements DataConsumer<T>
+public class BatchDataConsumer implements DataConsumer<Object>
 {
     private static final Logger logger = Logger.getLogger(BatchDataConsumer.class.getName());
 
@@ -20,7 +21,14 @@ public class BatchDataConsumer<T> implements DataConsumer<T>
     {
         logger.log(Level.INFO, "BatchDataConsumer.BatchDataConsumer");
 
-        _dataFlowNode = dataFlowNode;
+        _id            = UUID.randomUUID().toString();
+        _dataFlowNode  = dataFlowNode;
+        _blockingQueue = new LinkedBlockingQueue<Object>();
+    }
+
+    public String getId()
+    {
+        return _id;
     }
 
     @Override
@@ -32,10 +40,29 @@ public class BatchDataConsumer<T> implements DataConsumer<T>
     }
 
     @Override
-    public void consume(DataProvider<T> dataProvider, T data)
+    public void consume(DataProvider<Object> dataProvider, Object data)
     {
         logger.log(Level.INFO, "BatchDataConsumer.consume");
+
+        try
+        {
+            _blockingQueue.put(data);
+        }
+        catch (InterruptedException interruptedException)
+        {
+            logger.log(Level.WARNING, "Problem while putting item into DataConsumerItemReader", interruptedException);
+        }
     }
 
-    private DataFlowNode _dataFlowNode;
+    public Object readItem()
+        throws InterruptedException
+    {
+        logger.log(Level.INFO, "BatchDataConsumer.consume");
+
+        return _blockingQueue.take();
+    }
+
+    private String                _id;
+    private DataFlowNode          _dataFlowNode;
+    private BlockingQueue<Object> _blockingQueue;
 }

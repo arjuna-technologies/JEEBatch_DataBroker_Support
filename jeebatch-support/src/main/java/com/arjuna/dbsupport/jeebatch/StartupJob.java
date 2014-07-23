@@ -11,9 +11,9 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
-import javax.batch.runtime.StepExecution;
 import javax.ejb.Startup;
 import javax.ejb.Singleton;
+import javax.inject.Inject;
 
 @Startup
 @Singleton
@@ -28,16 +28,26 @@ public class StartupJob implements Serializable
     {
         logger.log(Level.INFO, "StartupJob.startupJob");
 
+        BatchDataConsumer batchDataConsumer = new BatchDataConsumer(null);
+        BatchDataProvider batchDataProvider = new BatchDataProvider(null);
+
+        _batchDataConsumerMap.add(batchDataConsumer);
+        _batchDataProviderMap.add(batchDataProvider);
+
         JobOperator jobOperator = BatchRuntime.getJobOperator();
-        Properties  properties  = new Properties();
 
-        long execId = jobOperator.start("testJob", properties);
+        Properties jobParameters = new Properties();
+        jobParameters.setProperty(BatchDataConsumerMap.ID_PROPERTYNAME, batchDataConsumer.getId());
+        jobParameters.setProperty(BatchDataProviderMap.ID_PROPERTYNAME, batchDataProvider.getId());
 
-        for (StepExecution stepExecution: jobOperator.getStepExecutions(execId))
-        {
-            logger.log(Level.INFO, "********: " + stepExecution.getStepName() + ", " + stepExecution.getBatchStatus() + " ********");
-        }
+        long execId = jobOperator.start("testJob", jobParameters);
 
         logger.log(Level.INFO, "StartupJob.startupJob: " + execId);
     }
+
+    @Inject
+    private BatchDataConsumerMap _batchDataConsumerMap;
+
+    @Inject
+    private BatchDataProviderMap _batchDataProviderMap;
 }

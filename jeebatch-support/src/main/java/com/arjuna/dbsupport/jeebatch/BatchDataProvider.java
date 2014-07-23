@@ -8,24 +8,31 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.inject.Named;
 import com.arjuna.databroker.data.DataFlowNode;
 import com.arjuna.databroker.data.DataConsumer;
 import com.arjuna.databroker.data.DataProvider;
 
-@Named
-public class BatchDataProvider<T> implements DataProvider<T>
+public class BatchDataProvider implements DataProvider<Object>
 {
     private static final Logger logger = Logger.getLogger(BatchDataProvider.class.getName());
 
     public BatchDataProvider(DataFlowNode dataFlowNode)
     {
+        logger.log(Level.INFO, "BatchDataProvider.BatchDataProvider");
+
+        _id            = UUID.randomUUID().toString();
         _dataFlowNode  = dataFlowNode;
-        _dataConsumers = new LinkedList<DataConsumer<T>>();
+        _dataConsumers = new LinkedList<DataConsumer<Object>>();
     }
 
+    public String getId()
+    {
+        return _id;
+    }
+    
     @Override
     public DataFlowNode getDataFlowNode()
     {
@@ -35,7 +42,7 @@ public class BatchDataProvider<T> implements DataProvider<T>
     }
 
     @Override
-    public Collection<DataConsumer<T>> getDataConsumers()
+    public Collection<DataConsumer<Object>> getDataConsumers()
     {
         logger.log(Level.INFO, "BatchDataProvider.getDataConsumers");
 
@@ -43,7 +50,7 @@ public class BatchDataProvider<T> implements DataProvider<T>
     }
 
     @Override
-    public void addDataConsumer(DataConsumer<T> dataConsumer)
+    public void addDataConsumer(DataConsumer<Object> dataConsumer)
     {
         logger.log(Level.INFO, "BatchDataProvider.addDataConsumer");
 
@@ -51,7 +58,7 @@ public class BatchDataProvider<T> implements DataProvider<T>
     }
 
     @Override
-    public void removeDataConsumer(DataConsumer<T> dataConsumer)
+    public void removeDataConsumer(DataConsumer<Object> dataConsumer)
     {
         logger.log(Level.INFO, "BatchDataProvider.removeDataConsumer");
 
@@ -59,14 +66,23 @@ public class BatchDataProvider<T> implements DataProvider<T>
     }
 
     @Override
-    public void produce(T data)
+    public void produce(Object data)
     {
         logger.log(Level.INFO, "BatchDataProvider.produce");
 
-        for (DataConsumer<T> dataConsumer: _dataConsumers)
+        for (DataConsumer<Object> dataConsumer: _dataConsumers)
             dataConsumer.consume(this, data);
     }
 
-    private DataFlowNode          _dataFlowNode;
-    private List<DataConsumer<T>> _dataConsumers;
+    public void writeItems(List<Object> items)
+    {
+        logger.log(Level.INFO, "BatchDataProvider.writeItems");
+
+        for (Object item: items)
+            produce(item);
+    }
+
+    private String                     _id;
+    private DataFlowNode               _dataFlowNode;
+    private List<DataConsumer<Object>> _dataConsumers;
 }

@@ -7,9 +7,9 @@
 <job id="testJob" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
     <step id="testStep">
         <chunk item-count="3">
-            <reader ref="dataFlowItemReader"/>
+            <reader ref="dataConsumerItemReader"/>
             <processor ref="testItemProcessor"/>
-            <writer ref="dataFlowItemWriter"/>
+            <writer ref="dataProviderItemWriter"/>
         </chunk>
     </step>
 </job>
