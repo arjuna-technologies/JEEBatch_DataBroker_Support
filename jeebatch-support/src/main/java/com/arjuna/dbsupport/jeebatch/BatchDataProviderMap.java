@@ -16,7 +16,7 @@ public class BatchDataProviderMap
 {
     private static final Logger logger = Logger.getLogger(BatchDataProviderMap.class.getName());
 
-    public static final String ID_PROPERTYNAME = "dataprovider.id";
+    public static final String ID_PROPERTYNAME = "DataProviderId";
 
     public BatchDataProviderMap()
     {

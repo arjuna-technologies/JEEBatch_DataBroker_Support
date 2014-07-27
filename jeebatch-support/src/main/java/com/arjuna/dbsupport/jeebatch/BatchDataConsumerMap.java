@@ -16,7 +16,7 @@ public class BatchDataConsumerMap
 {
     private static final Logger logger = Logger.getLogger(BatchDataConsumerMap.class.getName());
 
-    public static final String ID_PROPERTYNAME = "dataconsumer.id";
+    public static final String ID_PROPERTYNAME = "DataConsumerId";
 
     public BatchDataConsumerMap()
     {
