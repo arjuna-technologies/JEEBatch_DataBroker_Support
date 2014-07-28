@@ -21,7 +21,7 @@ public class BatchDataProvider implements DataProvider<Object>
 
     public BatchDataProvider(DataFlowNode dataFlowNode)
     {
-        logger.log(Level.INFO, "BatchDataProvider.BatchDataProvider");
+        logger.log(Level.FINE, "BatchDataProvider.BatchDataProvider");
 
         _id            = UUID.randomUUID().toString();
         _dataFlowNode  = dataFlowNode;
@@ -36,7 +36,7 @@ public class BatchDataProvider implements DataProvider<Object>
     @Override
     public DataFlowNode getDataFlowNode()
     {
-        logger.log(Level.INFO, "BatchDataProvider.getDataFlowNode");
+        logger.log(Level.FINE, "BatchDataProvider.getDataFlowNode");
 
         return _dataFlowNode;
     }
@@ -44,7 +44,7 @@ public class BatchDataProvider implements DataProvider<Object>
     @Override
     public Collection<DataConsumer<Object>> getDataConsumers()
     {
-        logger.log(Level.INFO, "BatchDataProvider.getDataConsumers");
+        logger.log(Level.FINE, "BatchDataProvider.getDataConsumers");
 
         return Collections.unmodifiableList(_dataConsumers);
     }
@@ -52,7 +52,7 @@ public class BatchDataProvider implements DataProvider<Object>
     @Override
     public void addDataConsumer(DataConsumer<Object> dataConsumer)
     {
-        logger.log(Level.INFO, "BatchDataProvider.addDataConsumer");
+        logger.log(Level.FINE, "BatchDataProvider.addDataConsumer");
 
         _dataConsumers.add(dataConsumer);
     }
@@ -60,7 +60,7 @@ public class BatchDataProvider implements DataProvider<Object>
     @Override
     public void removeDataConsumer(DataConsumer<Object> dataConsumer)
     {
-        logger.log(Level.INFO, "BatchDataProvider.removeDataConsumer");
+        logger.log(Level.FINE, "BatchDataProvider.removeDataConsumer");
 
         _dataConsumers.remove(dataConsumer);
     }
@@ -68,7 +68,7 @@ public class BatchDataProvider implements DataProvider<Object>
     @Override
     public void produce(Object data)
     {
-        logger.log(Level.INFO, "BatchDataProvider.produce");
+        logger.log(Level.FINE, "BatchDataProvider.produce");
 
         for (DataConsumer<Object> dataConsumer: _dataConsumers)
             dataConsumer.consume(this, data);
@@ -76,7 +76,7 @@ public class BatchDataProvider implements DataProvider<Object>
 
     public void writeItems(List<Object> items)
     {
-        logger.log(Level.INFO, "BatchDataProvider.writeItems");
+        logger.log(Level.FINE, "BatchDataProvider.writeItems");
 
         for (Object item: items)
             produce(item);

@@ -6,8 +6,8 @@
 
 <job id="testJob" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
     <properties>
-        <property name="dataconsumer_id" value="#{jobParameters['DataConsumerId']}"/>
-        <property name="dataproducer_id" value="#{jobParameters['DataProducerId']}"/>
+        <property name="dataconsumer_id" value="#{jobParameters['dataconsumer_id']}"/>
+        <property name="dataprovider_id" value="#{jobParameters['dataprovider_id']}"/>
     </properties>
     <step id="testStep">
         <chunk item-count="3">

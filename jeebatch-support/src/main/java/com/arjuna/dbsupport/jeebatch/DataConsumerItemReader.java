@@ -22,26 +22,20 @@ public class DataConsumerItemReader implements ItemReader
     public void open(Serializable checkpoint)
         throws Exception
     {
-        logger.log(Level.INFO, "DataConsumerItemReader.open: jobName           " + _jobContext.getJobName());
-
-        logger.log(Level.INFO, "DataConsumerItemReader.open: properties        " + _jobContext.getProperties());
-
-        logger.log(Level.INFO, "DataConsumerItemReader.open: transientUserData " + _jobContext.getTransientUserData());
+        logger.log(Level.FINE, "DataConsumerItemReader.open: jobName = " + _jobContext.getJobName());
 
         String id = _jobContext.getProperties().getProperty(BatchDataConsumerMap.ID_PROPERTYNAME);
 
-        logger.log(Level.INFO, "DataConsumerItemReader.open: id                " + id);
+        logger.log(Level.FINE, "DataConsumerItemReader.open: id = " + id);
 
         _batchDataConsumer = _batchDataConsumerMap.get(id);
-
-        logger.log(Level.INFO, "DataConsumerItemReader.open: batchDataConsumer " + _batchDataConsumer);        
     }
 
     @Override
     public Serializable checkpointInfo()
         throws Exception
     {
-        logger.log(Level.INFO, "DataConsumerItemReader.checkpointInfo: " + _jobContext.getJobName());
+        logger.log(Level.FINE, "DataConsumerItemReader.checkpointInfo: " + _jobContext.getJobName());
 
         return null;
     }
@@ -50,7 +44,7 @@ public class DataConsumerItemReader implements ItemReader
     public Object readItem()
         throws Exception
     {
-        logger.log(Level.INFO, "DataConsumerItemReader.readItem: " + _jobContext.getJobName() + " -> " + _batchDataConsumer);
+        logger.log(Level.FINE, "DataConsumerItemReader.readItem: " + _jobContext.getJobName() + " -> " + _batchDataConsumer);
 
         return _batchDataConsumer.readItem();
     }
@@ -59,7 +53,7 @@ public class DataConsumerItemReader implements ItemReader
     public void close()
         throws Exception
     {
-        logger.log(Level.INFO, "DataConsumerItemReader.close: " + _jobContext.getJobName() + " -> " + _batchDataConsumer);
+        logger.log(Level.FINE, "DataConsumerItemReader.close: " + _jobContext.getJobName() + " -> " + _batchDataConsumer);
 
         _batchDataConsumerMap.remove(_batchDataConsumer);
     }

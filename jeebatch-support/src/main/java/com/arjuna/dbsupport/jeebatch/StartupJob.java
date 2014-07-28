@@ -9,6 +9,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.batch.api.BatchProperty;
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
 import javax.ejb.Startup;
@@ -34,6 +35,12 @@ public class StartupJob implements Serializable
         _batchDataConsumerMap.add(batchDataConsumer);
         _batchDataProviderMap.add(batchDataProvider);
 
+        logger.log(Level.INFO, "StartupJob.startupJob: _batchDataConsumerMap = " + _batchDataConsumerMap);
+        logger.log(Level.INFO, "StartupJob.startupJob: _batchDataProviderMap = " + _batchDataProviderMap);
+
+        logger.log(Level.INFO, "StartupJob.startupJob: " + BatchDataConsumerMap.ID_PROPERTYNAME + " = " + batchDataConsumer.getId());
+        logger.log(Level.INFO, "StartupJob.startupJob: " + BatchDataProviderMap.ID_PROPERTYNAME + " = " + batchDataProvider.getId());
+
         JobOperator jobOperator = BatchRuntime.getJobOperator();
 
         Properties jobParameters = new Properties();
@@ -46,8 +53,10 @@ public class StartupJob implements Serializable
     }
 
     @Inject
+    @BatchProperty
     private BatchDataConsumerMap _batchDataConsumerMap;
 
     @Inject
+    @BatchProperty
     private BatchDataProviderMap _batchDataProviderMap;
 }

@@ -16,7 +16,7 @@ public class BatchDataProviderMap
 {
     private static final Logger logger = Logger.getLogger(BatchDataProviderMap.class.getName());
 
-    public static final String ID_PROPERTYNAME = "DataProviderId";
+    public static final String ID_PROPERTYNAME = "dataprovider_id";
 
     public BatchDataProviderMap()
     {
@@ -42,10 +42,15 @@ public class BatchDataProviderMap
     @BatchProperty
     public BatchDataProviderMap getBatchDataProviderMap(final InjectionPoint injectionPoint)
     {
-        logger.log(Level.INFO, "BatchDataProviderMap.getBatchDataProviderMap");
+        logger.log(Level.FINE, "BatchDataProviderMap.getBatchDataProviderMap");
 
-        if (_instance == null)
-            _instance = new BatchDataProviderMap();
+        synchronized (this)
+        {
+            if (_instance == null)
+                _instance = new BatchDataProviderMap();
+        }
+
+        logger.log(Level.FINE, "BatchDataProviderMap.getBatchDataProviderMap: returns = " + _instance);
 
         return _instance;
     }

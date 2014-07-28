@@ -19,7 +19,7 @@ public class BatchDataConsumer implements DataConsumer<Object>
 
     public BatchDataConsumer(DataFlowNode dataFlowNode)
     {
-        logger.log(Level.INFO, "BatchDataConsumer.BatchDataConsumer");
+        logger.log(Level.FINE, "BatchDataConsumer.BatchDataConsumer");
 
         _id            = UUID.randomUUID().toString();
         _dataFlowNode  = dataFlowNode;
@@ -34,7 +34,7 @@ public class BatchDataConsumer implements DataConsumer<Object>
     @Override
     public DataFlowNode getDataFlowNode()
     {
-        logger.log(Level.INFO, "BatchDataConsumer.getDataFlowNode");
+        logger.log(Level.FINE, "BatchDataConsumer.getDataFlowNode");
 
         return _dataFlowNode;
     }
@@ -42,7 +42,7 @@ public class BatchDataConsumer implements DataConsumer<Object>
     @Override
     public void consume(DataProvider<Object> dataProvider, Object data)
     {
-        logger.log(Level.INFO, "BatchDataConsumer.consume");
+        logger.log(Level.FINE, "BatchDataConsumer.consume");
 
         try
         {
@@ -57,7 +57,7 @@ public class BatchDataConsumer implements DataConsumer<Object>
     public Object readItem()
         throws InterruptedException
     {
-        logger.log(Level.INFO, "BatchDataConsumer.consume");
+        logger.log(Level.FINE, "BatchDataConsumer.consume");
 
         return _blockingQueue.take();
     }

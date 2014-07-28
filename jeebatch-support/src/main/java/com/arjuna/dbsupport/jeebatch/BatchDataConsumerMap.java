@@ -16,7 +16,7 @@ public class BatchDataConsumerMap
 {
     private static final Logger logger = Logger.getLogger(BatchDataConsumerMap.class.getName());
 
-    public static final String ID_PROPERTYNAME = "DataConsumerId";
+    public static final String ID_PROPERTYNAME = "dataconsumer_id";
 
     public BatchDataConsumerMap()
     {
@@ -40,16 +40,22 @@ public class BatchDataConsumerMap
 
     @Produces
     @BatchProperty
-    public BatchDataConsumerMap getBatchDataConsumerMap(final InjectionPoint injectionPoint)
+    public static BatchDataConsumerMap getBatchDataConsumerMap(final InjectionPoint injectionPoint)
     {
-        logger.log(Level.INFO, "BatchDataConsumerMap.getBatchDataConsumerMap");
+        logger.log(Level.FINE, "BatchDataConsumerMap.getBatchDataConsumerMap");
 
-        if (_instance == null)
-            _instance = new BatchDataConsumerMap();
+        synchronized (_syncObject)
+        {
+            if (_instance == null)
+                _instance = new BatchDataConsumerMap();
+        }
+
+        logger.log(Level.FINE, "BatchDataConsumerMap.getBatchDataConsumerMap: returns = " + _instance);
 
         return _instance;
     }
 
+    private static Object               _syncObject = new Object();
     private static BatchDataConsumerMap _instance;
 
     private Map<String, BatchDataConsumer> _batchDataConsumerMap;
