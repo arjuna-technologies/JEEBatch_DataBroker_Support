@@ -5,16 +5,14 @@
 package com.arjuna.dbsupport.jeebatch;
 
 import java.io.Serializable;
-import java.util.Properties;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.batch.api.BatchProperty;
-import javax.batch.operations.JobOperator;
-import javax.batch.runtime.BatchRuntime;
 import javax.ejb.Startup;
 import javax.ejb.Singleton;
-import javax.inject.Inject;
+import com.arjuna.databroker.data.DataConsumer;
 
 @Startup
 @Singleton
@@ -28,35 +26,13 @@ public class StartupJob implements Serializable
     public void startupJob()
     {
         logger.log(Level.INFO, "StartupJob.startupJob");
+        String              name       = "Test Job";
+        Map<String, String> properties = new HashMap<String, String>();
+        properties.put(BatchDataProcessor.JOBID_PROPERTYNAME, "testJob");
 
-        BatchDataConsumer batchDataConsumer = new BatchDataConsumer(null);
-        BatchDataProvider batchDataProvider = new BatchDataProvider(null);
-
-        _batchDataConsumerMap.add(batchDataConsumer);
-        _batchDataProviderMap.add(batchDataProvider);
-
-        logger.log(Level.INFO, "StartupJob.startupJob: _batchDataConsumerMap = " + _batchDataConsumerMap);
-        logger.log(Level.INFO, "StartupJob.startupJob: _batchDataProviderMap = " + _batchDataProviderMap);
-
-        logger.log(Level.INFO, "StartupJob.startupJob: " + BatchDataConsumerMap.ID_PROPERTYNAME + " = " + batchDataConsumer.getId());
-        logger.log(Level.INFO, "StartupJob.startupJob: " + BatchDataProviderMap.ID_PROPERTYNAME + " = " + batchDataProvider.getId());
-
-        JobOperator jobOperator = BatchRuntime.getJobOperator();
-
-        Properties jobParameters = new Properties();
-        jobParameters.setProperty(BatchDataConsumerMap.ID_PROPERTYNAME, batchDataConsumer.getId());
-        jobParameters.setProperty(BatchDataProviderMap.ID_PROPERTYNAME, batchDataProvider.getId());
-
-        long execId = jobOperator.start("testJob", jobParameters);
-
-        logger.log(Level.INFO, "StartupJob.startupJob: " + execId);
+        BatchDataProcessor batchDataProcessor = new BatchDataProcessor(name, properties);
+        
+        DataConsumer<Object> dataConsumer = batchDataProcessor.getDataConsumer(Object.class);
+        dataConsumer.consume(null, "Test Data");
     }
-
-    @Inject
-    @BatchProperty
-    private BatchDataConsumerMap _batchDataConsumerMap;
-
-    @Inject
-    @BatchProperty
-    private BatchDataProviderMap _batchDataProviderMap;
 }

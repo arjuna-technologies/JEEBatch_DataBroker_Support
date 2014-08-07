@@ -27,7 +27,7 @@ public class DataProviderItemWriter implements ItemWriter
         
         String id = _jobContext.getProperties().getProperty(BatchDataProviderMap.ID_PROPERTYNAME);
 
-        logger.log(Level.FINE, "DataProviderItemWriter.open: id = " + id);
+        logger.log(Level.FINE, "DataProviderItemWriter.open: id    = " + id);
 
         _batchDataProvider = _batchDataProviderMap.get(id);
     }

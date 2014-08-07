@@ -26,7 +26,7 @@ public class DataConsumerItemReader implements ItemReader
 
         String id = _jobContext.getProperties().getProperty(BatchDataConsumerMap.ID_PROPERTYNAME);
 
-        logger.log(Level.FINE, "DataConsumerItemReader.open: id = " + id);
+        logger.log(Level.FINE, "DataConsumerItemReader.open: id      = " + id);
 
         _batchDataConsumer = _batchDataConsumerMap.get(id);
     }

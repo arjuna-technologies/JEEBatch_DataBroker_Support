@@ -18,11 +18,11 @@ public class BatchDataConsumerMap
 
     public static final String ID_PROPERTYNAME = "dataconsumer_id";
 
-    public BatchDataConsumerMap()
+    private BatchDataConsumerMap()
     {
         _batchDataConsumerMap = new HashMap<String, BatchDataConsumer>();
     }
-    
+
     public void add(BatchDataConsumer batchDataConsumer)
     {
         _batchDataConsumerMap.put(batchDataConsumer.getId(), batchDataConsumer);
@@ -38,9 +38,24 @@ public class BatchDataConsumerMap
         return (_batchDataConsumerMap.remove(batchDataConsumer.getId()) != null);
     }
 
+    public static BatchDataConsumerMap getBatchDataConsumerMap()
+    {
+        logger.log(Level.FINE, "BatchDataConsumerMap.getBatchDataConsumerMap");
+
+        synchronized (_syncObject)
+        {
+            if (_instance == null)
+                _instance = new BatchDataConsumerMap();
+        }
+
+        logger.log(Level.FINE, "BatchDataConsumerMap.getBatchDataConsumerMap: returns = " + _instance);
+
+        return _instance;
+    }
+
     @Produces
     @BatchProperty
-    public static BatchDataConsumerMap getBatchDataConsumerMap(final InjectionPoint injectionPoint)
+    public BatchDataConsumerMap getBatchDataConsumerMap(final InjectionPoint injectionPoint)
     {
         logger.log(Level.FINE, "BatchDataConsumerMap.getBatchDataConsumerMap");
 

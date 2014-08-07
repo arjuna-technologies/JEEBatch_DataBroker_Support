@@ -8,9 +8,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.batch.operations.JobOperator;
+import javax.batch.runtime.BatchRuntime;
 import com.arjuna.databroker.data.DataProvider;
 import com.arjuna.databroker.data.DataSource;
 
@@ -18,13 +21,26 @@ public class BatchDataSource implements DataSource
 {
     private static final Logger logger = Logger.getLogger(BatchDataSource.class.getName());
 
+    public static final String JOBID_PROPERTYNAME = "Job ID";
+
     public BatchDataSource(String name, Map<String, String> properties)
     {
         logger.log(Level.FINE, "BatchDataSource: " + name + ", " + properties);
 
-        _name         = name;
-        _properties   = properties;
-        _dataProvider = new BatchDataProvider(this);
+        _name              = name;
+        _properties        = properties;
+        _batchDataProvider = new BatchDataProvider(this);
+
+        BatchDataProviderMap.getBatchDataProviderMap().add(_batchDataProvider);
+
+        JobOperator jobOperator = BatchRuntime.getJobOperator();
+
+        Properties jobParameters = new Properties();
+        jobParameters.setProperty(BatchDataProviderMap.ID_PROPERTYNAME, _batchDataProvider.getId());
+
+        long execId = jobOperator.start(_properties.get(JOBID_PROPERTYNAME), jobParameters);
+
+        logger.log(Level.FINE, "BatchDataSource: " + execId);
     }
 
     @Override
@@ -54,12 +70,12 @@ public class BatchDataSource implements DataSource
     public <T> DataProvider<T> getDataProvider(Class<T> dataClass)
     {
         if (dataClass == Object.class)
-            return (DataProvider<T>) _dataProvider;
+            return (DataProvider<T>) _batchDataProvider;
         else
             return null;
     }
 
-    private String               _name;
-    private Map<String, String>  _properties;
-    private DataProvider<Object> _dataProvider;
+    private String              _name;
+    private Map<String, String> _properties;
+    private BatchDataProvider   _batchDataProvider;
 }

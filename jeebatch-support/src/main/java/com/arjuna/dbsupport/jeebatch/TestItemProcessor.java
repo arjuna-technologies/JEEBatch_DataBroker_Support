@@ -24,8 +24,7 @@ public class TestItemProcessor implements ItemProcessor
         throws Exception
     {
         logger.log(Level.INFO, "TestItemProcessor.processItem: " + jobContext.getJobName());
-        logger.log(Level.INFO, "                   this:       " + this);
-        logger.log(Level.INFO, "                   jobContext: " + jobContext);
+        logger.log(Level.INFO, "                   item:       " + item);
 
         return item;
     }

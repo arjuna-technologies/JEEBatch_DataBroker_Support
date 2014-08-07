@@ -18,7 +18,7 @@ public class BatchDataProviderMap
 
     public static final String ID_PROPERTYNAME = "dataprovider_id";
 
-    public BatchDataProviderMap()
+    private BatchDataProviderMap()
     {
         _batchDataProviderMap = new HashMap<String, BatchDataProvider>();
     }
@@ -38,13 +38,11 @@ public class BatchDataProviderMap
         return (_batchDataProviderMap.remove(batchDataProvider.getId()) != null);
     }
 
-    @Produces
-    @BatchProperty
-    public BatchDataProviderMap getBatchDataProviderMap(final InjectionPoint injectionPoint)
+    public static BatchDataProviderMap getBatchDataProviderMap()
     {
         logger.log(Level.FINE, "BatchDataProviderMap.getBatchDataProviderMap");
 
-        synchronized (this)
+        synchronized (_syncObject)
         {
             if (_instance == null)
                 _instance = new BatchDataProviderMap();
@@ -54,7 +52,25 @@ public class BatchDataProviderMap
 
         return _instance;
     }
-    
+
+    @Produces
+    @BatchProperty
+    public BatchDataProviderMap getBatchDataProviderMap(final InjectionPoint injectionPoint)
+    {
+        logger.log(Level.FINE, "BatchDataProviderMap.getBatchDataProviderMap");
+
+        synchronized (_syncObject)
+        {
+            if (_instance == null)
+                _instance = new BatchDataProviderMap();
+        }
+
+        logger.log(Level.FINE, "BatchDataProviderMap.getBatchDataProviderMap: returns = " + _instance);
+
+        return _instance;
+    }
+
+    private static Object               _syncObject = new Object();
     private static BatchDataProviderMap _instance;
 
     private Map<String, BatchDataProvider> _batchDataProviderMap;

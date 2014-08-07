@@ -15,28 +15,32 @@ import java.util.logging.Logger;
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
 import com.arjuna.databroker.data.DataConsumer;
-import com.arjuna.databroker.data.DataSink;
+import com.arjuna.databroker.data.DataProvider;
+import com.arjuna.databroker.data.DataProcessor;
 
-public class BatchDataSink implements DataSink
+public class BatchDataService implements DataProcessor
 {
-    private static final Logger logger = Logger.getLogger(BatchDataSink.class.getName());
+    private static final Logger logger = Logger.getLogger(BatchDataService.class.getName());
 
     public static final String JOBID_PROPERTYNAME = "Job ID";
 
-    public BatchDataSink(String name, Map<String, String> properties)
+    public BatchDataService(String name, Map<String, String> properties)
     {
-        logger.log(Level.FINE, "BatchDataSink: " + name + ", " + properties);
+        logger.log(Level.FINE, "BatchDataService: " + name + ", " + properties);
 
         _name              = name;
         _properties        = properties;
         _batchDataConsumer = new BatchDataConsumer(this);
+        _batchDataProvider = new BatchDataProvider(this);
 
         BatchDataConsumerMap.getBatchDataConsumerMap().add(_batchDataConsumer);
+        BatchDataProviderMap.getBatchDataProviderMap().add(_batchDataProvider);
 
         JobOperator jobOperator = BatchRuntime.getJobOperator();
 
         Properties jobParameters = new Properties();
         jobParameters.setProperty(BatchDataConsumerMap.ID_PROPERTYNAME, _batchDataConsumer.getId());
+        jobParameters.setProperty(BatchDataProviderMap.ID_PROPERTYNAME, _batchDataProvider.getId());
 
         long execId = jobOperator.start(_properties.get(JOBID_PROPERTYNAME), jobParameters);
 
@@ -75,7 +79,28 @@ public class BatchDataSink implements DataSink
             return null;
     }
 
+    @Override
+    public Collection<Class<?>> getDataProviderDataClasses()
+    {
+        Set<Class<?>> dataProviderDataClasses = new HashSet<Class<?>>();
+
+        dataProviderDataClasses.add(Object.class);
+        
+        return dataProviderDataClasses;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> DataProvider<T> getDataProvider(Class<T> dataClass)
+    {
+        if (dataClass == Object.class)
+            return (DataProvider<T>) _batchDataProvider;
+        else
+            return null;
+    }
+
     private String              _name;
     private Map<String, String> _properties;
     private BatchDataConsumer   _batchDataConsumer;
+    private BatchDataProvider   _batchDataProvider;
 }
