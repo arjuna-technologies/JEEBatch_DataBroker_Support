@@ -2,7 +2,7 @@
  * Copyright (c) 2014, Arjuna Technologies Limited, Newcastle-upon-Tyne, England. All rights reserved.
  */
 
-package com.arjuna.dbsupport.jeebatch;
+package com.arjuna.dbsupport.test.jeebatch;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

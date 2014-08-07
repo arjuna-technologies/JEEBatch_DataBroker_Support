@@ -2,7 +2,7 @@
  * Copyright (c) 2014, Arjuna Technologies Limited, Newcastle-upon-Tyne, England. All rights reserved.
  */
 
-package com.arjuna.dbsupport.jeebatch;
+package com.arjuna.dbsupport.test.jeebatch;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -13,6 +13,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Startup;
 import javax.ejb.Singleton;
 import com.arjuna.databroker.data.DataConsumer;
+import com.arjuna.dbsupport.jeebatch.BatchDataProcessor;
 
 @Startup
 @Singleton

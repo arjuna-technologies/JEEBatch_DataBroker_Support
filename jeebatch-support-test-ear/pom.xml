@@ -13,36 +13,32 @@
         <version>1.0.0p1m1</version>
     </parent>
 
-    <artifactId>jeebatch-support-ear</artifactId>
+    <artifactId>jeebatch-support-test-ear</artifactId>
 
     <packaging>ear</packaging>
 
-    <name>JEE Batch DataBroker Support EAR</name>
+    <name>JEE Batch DataBroker Support Test EAR</name>
 
     <dependencies>
         <dependency>
             <groupId>com.arjuna.dbsupport</groupId>
-            <artifactId>jeebatch-support</artifactId>
+            <artifactId>jeebatch-support-test</artifactId>
             <version>1.0.0p1m1</version>
-            <type>jar</type>
+            <type>ejb</type>
         </dependency>
     </dependencies>
 
     <build>
-        <finalName>jeebatch-support</finalName>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-ear-plugin</artifactId>
                 <configuration>
                     <modules>
-                        <jarModule>
+                        <ejbModule>
                             <groupId>com.arjuna.dbsupport</groupId>
-                            <artifactId>jeebatch-support</artifactId>
-                            <bundleFileName>jeebatch-support.jar</bundleFileName>
-                            <includeInApplicationXml>true</includeInApplicationXml>
-                        </jarModule>
+                            <artifactId>jeebatch-support-test</artifactId>
+                        </ejbModule>
                     </modules>
                 </configuration>
             </plugin>
