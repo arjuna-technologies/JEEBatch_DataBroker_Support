@@ -12,9 +12,12 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
+
 import com.arjuna.databroker.data.DataConsumer;
+import com.arjuna.databroker.data.DataFlow;
 import com.arjuna.databroker.data.DataProvider;
 import com.arjuna.databroker.data.DataProcessor;
 
@@ -48,15 +51,39 @@ public class BatchDataService implements DataProcessor
     }
 
     @Override
+    public DataFlow getDataFlow()
+    {
+        return _dataFlow;
+    }
+
+    @Override
+    public void setDataFlow(DataFlow dataFlow)
+    {
+        _dataFlow = dataFlow;
+    }
+
+    @Override
     public String getName()
     {
         return _name;
     }
 
     @Override
+    public void setName(String name)
+    {
+        _name = name;
+    }
+
+    @Override
     public Map<String, String> getProperties()
     {
         return Collections.unmodifiableMap(_properties);
+    }
+
+    @Override
+    public void setProperties(Map<String, String> properties)
+    {
+        _properties = properties;
     }
 
     @Override
@@ -99,6 +126,7 @@ public class BatchDataService implements DataProcessor
             return null;
     }
 
+    private DataFlow            _dataFlow;
     private String              _name;
     private Map<String, String> _properties;
     private BatchDataConsumer   _batchDataConsumer;

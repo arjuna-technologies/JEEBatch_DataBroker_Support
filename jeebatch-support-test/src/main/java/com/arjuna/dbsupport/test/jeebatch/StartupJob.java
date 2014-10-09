@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Startup;
 import javax.ejb.Singleton;
-import com.arjuna.databroker.data.DataConsumer;
+import com.arjuna.databroker.data.connector.ObserverDataConsumer;
 import com.arjuna.dbsupport.jeebatch.BatchDataProcessor;
 
 @Startup
@@ -33,7 +33,7 @@ public class StartupJob implements Serializable
 
         BatchDataProcessor batchDataProcessor = new BatchDataProcessor(name, properties);
         
-        DataConsumer<Object> dataConsumer = batchDataProcessor.getDataConsumer(Object.class);
+        ObserverDataConsumer<Object> dataConsumer = (ObserverDataConsumer<Object>) batchDataProcessor.getDataConsumer(Object.class);
         dataConsumer.consume(null, "Test Data");
     }
 }

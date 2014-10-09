@@ -9,11 +9,11 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.arjuna.databroker.data.DataConsumer;
-import com.arjuna.databroker.data.DataProvider;
 import com.arjuna.databroker.data.DataFlowNode;
+import com.arjuna.databroker.data.connector.ObservableDataProvider;
+import com.arjuna.databroker.data.connector.ObserverDataConsumer;
 
-public class BatchDataConsumer implements DataConsumer<Object>
+public class BatchDataConsumer implements ObserverDataConsumer<Object>
 {
     private static final Logger logger = Logger.getLogger(BatchDataConsumer.class.getName());
 
@@ -40,7 +40,7 @@ public class BatchDataConsumer implements DataConsumer<Object>
     }
 
     @Override
-    public void consume(DataProvider<Object> dataProvider, Object data)
+    public void consume(ObservableDataProvider<Object> dataProvider, Object data)
     {
         logger.log(Level.FINE, "BatchDataConsumer.consume");
 
