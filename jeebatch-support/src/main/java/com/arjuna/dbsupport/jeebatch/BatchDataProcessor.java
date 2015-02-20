@@ -27,6 +27,11 @@ public class BatchDataProcessor implements DataProcessor
 
     public static final String JOBID_PROPERTYNAME = "Job ID";
 
+    public BatchDataProcessor()
+    {
+        logger.log(Level.FINE, "BatchDataProcessor");
+    }
+
     public BatchDataProcessor(String name, Map<String, String> properties)
     {
         logger.log(Level.FINE, "BatchDataProcessor: " + name + ", " + properties);
