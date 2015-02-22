@@ -19,6 +19,9 @@ import javax.batch.runtime.BatchRuntime;
 import com.arjuna.databroker.data.DataConsumer;
 import com.arjuna.databroker.data.DataFlow;
 import com.arjuna.databroker.data.DataSink;
+import com.arjuna.databroker.data.jee.annotation.PostConfig;
+import com.arjuna.databroker.data.jee.annotation.PostCreated;
+import com.arjuna.databroker.data.jee.annotation.PostRecovery;
 
 public class BatchDataSink implements DataSink
 {
@@ -26,12 +29,24 @@ public class BatchDataSink implements DataSink
 
     public static final String JOBID_PROPERTYNAME = "Job ID";
 
+    public BatchDataSink()
+    {
+        logger.log(Level.FINE, "BatchDataSink");
+    }
+
     public BatchDataSink(String name, Map<String, String> properties)
     {
         logger.log(Level.FINE, "BatchDataSink: " + name + ", " + properties);
 
         _name              = name;
         _properties        = properties;
+    }
+    
+    @PostCreated
+    @PostRecovery
+    @PostConfig
+    public void setup()
+    {
         _batchDataConsumer = new BatchDataConsumer(this);
 
         BatchDataConsumerMap.getBatchDataConsumerMap().add(_batchDataConsumer);

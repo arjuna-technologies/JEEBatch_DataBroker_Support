@@ -20,6 +20,9 @@ import com.arjuna.databroker.data.DataConsumer;
 import com.arjuna.databroker.data.DataFlow;
 import com.arjuna.databroker.data.DataProvider;
 import com.arjuna.databroker.data.DataProcessor;
+import com.arjuna.databroker.data.jee.annotation.PostConfig;
+import com.arjuna.databroker.data.jee.annotation.PostCreated;
+import com.arjuna.databroker.data.jee.annotation.PostRecovery;
 
 public class BatchDataProcessor implements DataProcessor
 {
@@ -38,6 +41,13 @@ public class BatchDataProcessor implements DataProcessor
 
         _name              = name;
         _properties        = properties;
+    }
+    
+    @PostCreated
+    @PostRecovery
+    @PostConfig
+    public void setup()
+    {
         _batchDataConsumer = new BatchDataConsumer(this);
         _batchDataProvider = new BatchDataProvider(this);
 

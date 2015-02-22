@@ -9,6 +9,7 @@
     <sub-deployment name="jeebatch-support.jar">
         <dependencies>
             <module name="deployment.databroker.ear.data-common.jar"/>
+            <module name="deployment.databroker.ear.data-core-jee.jar"/>
         </dependencies>
     </sub-deployment>
 </jboss-deployment-structure>

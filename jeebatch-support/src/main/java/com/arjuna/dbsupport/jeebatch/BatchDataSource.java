@@ -12,13 +12,14 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
-
 import com.arjuna.databroker.data.DataFlow;
 import com.arjuna.databroker.data.DataProvider;
 import com.arjuna.databroker.data.DataSource;
+import com.arjuna.databroker.data.jee.annotation.PostConfig;
+import com.arjuna.databroker.data.jee.annotation.PostCreated;
+import com.arjuna.databroker.data.jee.annotation.PostRecovery;
 
 public class BatchDataSource implements DataSource
 {
@@ -32,6 +33,13 @@ public class BatchDataSource implements DataSource
 
         _name              = name;
         _properties        = properties;
+    }
+    
+    @PostCreated
+    @PostRecovery
+    @PostConfig
+    public void setup()
+    {
         _batchDataProvider = new BatchDataProvider(this);
 
         BatchDataProviderMap.getBatchDataProviderMap().add(_batchDataProvider);
