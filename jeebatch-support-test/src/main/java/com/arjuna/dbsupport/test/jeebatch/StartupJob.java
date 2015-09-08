@@ -32,7 +32,7 @@ public class StartupJob implements Serializable
         properties.put(BatchDataProcessor.JOBID_PROPERTYNAME, "testJob");
 
         BatchDataProcessor batchDataProcessor = new BatchDataProcessor(name, properties);
-        
+
         ObserverDataConsumer<Object> dataConsumer = (ObserverDataConsumer<Object>) batchDataProcessor.getDataConsumer(Object.class);
         dataConsumer.consume(null, "Test Data");
     }

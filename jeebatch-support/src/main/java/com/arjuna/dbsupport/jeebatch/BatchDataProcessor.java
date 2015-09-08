@@ -42,7 +42,7 @@ public class BatchDataProcessor implements DataProcessor
         _name              = name;
         _properties        = properties;
     }
-    
+
     @PostCreated
     @PostRecovery
     @PostConfig
@@ -127,7 +127,7 @@ public class BatchDataProcessor implements DataProcessor
         Set<Class<?>> dataProviderDataClasses = new HashSet<Class<?>>();
 
         dataProviderDataClasses.add(Object.class);
-        
+
         return dataProviderDataClasses;
     }
 

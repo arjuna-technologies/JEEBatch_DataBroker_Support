@@ -41,7 +41,7 @@ public class BatchDataSink implements DataSink
         _name              = name;
         _properties        = properties;
     }
-    
+
     @PostCreated
     @PostRecovery
     @PostConfig

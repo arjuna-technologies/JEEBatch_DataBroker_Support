@@ -32,7 +32,7 @@ public class BatchDataProvider implements ObservableDataProvider<Object>
     {
         return _id;
     }
-    
+
     @Override
     public DataFlowNode getDataFlowNode()
     {

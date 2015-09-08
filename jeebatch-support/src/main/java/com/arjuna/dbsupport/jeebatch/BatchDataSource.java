@@ -34,7 +34,7 @@ public class BatchDataSource implements DataSource
         _name              = name;
         _properties        = properties;
     }
-    
+
     @PostCreated
     @PostRecovery
     @PostConfig
@@ -96,7 +96,7 @@ public class BatchDataSource implements DataSource
         Set<Class<?>> dataProviderDataClasses = new HashSet<Class<?>>();
 
         dataProviderDataClasses.add(Object.class);
-        
+
         return dataProviderDataClasses;
     }
 

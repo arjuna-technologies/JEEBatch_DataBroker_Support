@@ -24,7 +24,7 @@ public class DataProviderItemWriter implements ItemWriter
         throws Exception
     {
         logger.log(Level.FINE, "DataProviderItemWriter.open: jobName = " + _jobContext.getJobName());
-        
+
         String id = _jobContext.getProperties().getProperty(BatchDataProviderMap.ID_PROPERTYNAME);
 
         logger.log(Level.FINE, "DataProviderItemWriter.open: id    = " + id);

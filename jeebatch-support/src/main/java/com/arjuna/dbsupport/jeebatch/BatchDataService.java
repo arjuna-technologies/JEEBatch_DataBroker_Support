@@ -127,7 +127,7 @@ public class BatchDataService implements DataProcessor
         Set<Class<?>> dataProviderDataClasses = new HashSet<Class<?>>();
 
         dataProviderDataClasses.add(Object.class);
-        
+
         return dataProviderDataClasses;
     }
 
